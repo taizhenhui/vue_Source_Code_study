@@ -96,6 +96,6 @@ function getOuterHTML (el: Element): string {
   }
 }
 
-Vue.compile = compileToFunctions
+Vue.compile = compileToFunctions // 多实现了一个api 将template转化成render函数
 
 export default Vue

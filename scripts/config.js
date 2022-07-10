@@ -27,7 +27,7 @@ const weexFactoryPlugin = {
 
 const aliases = require('./alias')
 const resolve = p => {
-  const base = p.split('/')[0]
+  const base = p.split('/')[0] // [web, entry-runtime-with-compiler.js]
   if (aliases[base]) {
     return path.resolve(aliases[base], p.slice(base.length + 1))
   } else {
@@ -264,6 +264,7 @@ function genConfig (name) {
 }
 
 if (process.env.TARGET) {
+  // 因为我们指定了打包的目录 所以我们会走到这里
   module.exports = genConfig(process.env.TARGET)
 } else {
   exports.getBuild = genConfig
