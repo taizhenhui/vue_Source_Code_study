@@ -22,5 +22,11 @@
 - 通过package.json 找到打包入口
 - scripts/config.js (web-full-dev, web-runtime-cjs-dev, web-runtime-esm, ...)
 - 打包的入口
-- web/entry-runtime.js                 ---->  src/platforms/web/entry-runtime.js
-- web/entry-runtime-with-compiler.js   ---->  src/platforms/web/entry-runtime-with-compiler.js
+  - web/entry-runtime.js                 ---->  src/platforms/web/entry-runtime.js
+  - web/entry-runtime-with-compiler.js   ---->  src/platforms/web/entry-runtime-with-compiler.js
+    - 两个入口的区别是袋有compiler的会重写$mount, 将template变成render函数
+- runtime/index.js  运行时 会提供一些dom操作的api 属性操作 / 元素操作 / 提供一些组件和指令
+- core/index.js  initGlobalAPI(Vue) 初始化全局api
+- /instance/index.js vue的构造函数
+
+> 指定sourcemap参数 可以开启代码调试

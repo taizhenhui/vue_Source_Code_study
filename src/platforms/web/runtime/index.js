@@ -27,11 +27,11 @@ Vue.config.getTagNamespace = getTagNamespace
 Vue.config.isUnknownElement = isUnknownElement
 
 // install platform runtime directives & components
-extend(Vue.options.directives, platformDirectives)
+extend(Vue.options.directives, platformDirectives)  // 添加平台对应的指令和组件
 extend(Vue.options.components, platformComponents)
 
 // install platform patch function
-Vue.prototype.__patch__ = inBrowser ? patch : noop
+Vue.prototype.__patch__ = inBrowser ? patch : noop // 渲染时会掉用的方法 更新时会掉用的方法
 
 // public mount method
 Vue.prototype.$mount = function (
@@ -39,6 +39,8 @@ Vue.prototype.$mount = function (
   hydrating?: boolean
 ): Component {
   el = el && inBrowser ? query(el) : undefined
+
+  // 组件的挂载
   return mountComponent(this, el, hydrating)
 }
 

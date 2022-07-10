@@ -14,28 +14,30 @@ const idToTemplate = cached(id => {
   return el && el.innerHTML
 })
 
-const mount = Vue.prototype.$mount
+const mount = Vue.prototype.$mount // 函数劫持 将原来的mount函数获取到之后重写mount函数
 Vue.prototype.$mount = function (
   el?: string | Element,
   hydrating?: boolean
 ): Component {
-  el = el && query(el)
+  el = el && query(el)  // 获取el元素
 
   /* istanbul ignore if */
+  // 我们的挂载流程是 用一个新的dom替换掉老的dom元素
   if (el === document.body || el === document.documentElement) {
     process.env.NODE_ENV !== 'production' && warn(
       `Do not mount Vue to <html> or <body> - mount to normal elements instead.`
+      // 不要将Vue装载到<html>或<body>-而是装载到普通元素。
     )
     return this
   }
 
   const options = this.$options
   // resolve template/el and convert to render function
-  if (!options.render) {
+  if (!options.render) { // 如果有render函数则直接使用用户的
     let template = options.template
-    if (template) {
+    if (template) { // 没有render函数 查看是否有模板
       if (typeof template === 'string') {
-        if (template.charAt(0) === '#') {
+        if (template.charAt(0) === '#') { // template: "#template"
           template = idToTemplate(template)
           /* istanbul ignore if */
           if (process.env.NODE_ENV !== 'production' && !template) {
@@ -45,15 +47,15 @@ Vue.prototype.$mount = function (
             )
           }
         }
-      } else if (template.nodeType) {
-        template = template.innerHTML
+      } else if (template.nodeType) { // 如果给的模板是一个dom元素
+        template = template.innerHTML  // 拿到模板中的内容
       } else {
         if (process.env.NODE_ENV !== 'production') {
           warn('invalid template option:' + template, this)
         }
         return this
       }
-    } else if (el) {
+    } else if (el) { // 如果没有模板则使用el对应的template
       template = getOuterHTML(el)
     }
     if (template) {
@@ -61,7 +63,7 @@ Vue.prototype.$mount = function (
       if (process.env.NODE_ENV !== 'production' && config.performance && mark) {
         mark('compile')
       }
-
+      // 直接将模板变成render函数
       const { render, staticRenderFns } = compileToFunctions(template, {
         outputSourceRange: process.env.NODE_ENV !== 'production',
         shouldDecodeNewlines,
@@ -79,7 +81,7 @@ Vue.prototype.$mount = function (
       }
     }
   }
-  return mount.call(this, el, hydrating)
+  return mount.call(this, el, hydrating)  // 掉用了挂载
 }
 
 /**

@@ -84,6 +84,7 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
   }
 }
 
+// nextTick支持了Promise的形式
 export function nextTick (cb?: Function, ctx?: Object) {
   let _resolve
   callbacks.push(() => {
@@ -94,12 +95,12 @@ export function nextTick (cb?: Function, ctx?: Object) {
         handleError(e, ctx, 'nextTick')
       }
     } else if (_resolve) {
-      _resolve(ctx)
+      _resolve(ctx) // 如果没有传递cd 默认会把成功赋予进来
     }
   })
   if (!pending) {
     pending = true
-    timerFunc()
+    timerFunc() // 只会开启一次异步任务
   }
   // $flow-disable-line
   if (!cb && typeof Promise !== 'undefined') {
